@@ -1,4 +1,4 @@
-BERTAC (_BERT_-style transformer-based language model with _A_dversarially pretrained _C_onvolutional neural network)
+BERTAC (*BERT*-style transformer-based language model with *A*dversarially pretrained *C*onvolutional neural network)
 ======
 
 **BERTAC** is a framework that combines a Transformer-based Language Model (TLM) such as BERT with an adversarially pretrained CNN (Convolutional Neural Network). It was proposed in our ACL-IJCNLP paper:
