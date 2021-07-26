@@ -14,7 +14,6 @@ The following table lists up the nine CNN models pretrained using the settings d
 |[cnn_2.3.4.200.pt](https://github.com/nict-wisdom/bertac/releases/download/cnn_2.3.4.200/cnn_2.3.4.200.pt)			     |"2,3,4"        |200        | 
 |[cnn_2.3.4.300.pt](https://github.com/nict-wisdom/bertac/releases/download/cnn_2.3.4.300/cnn_2.3.4.300.pt)			     |"2,3,4"        |300        | 
 
-https://github.com/nict-wisdom/bertac/releases/download/cnn_1.2.3.100/cnn_1.2.3.100.pt
 ## GAN-style pretraining 
 CNNs are pretrained in a GAN (Generative Adversarial Network) style using three subnetworks as shown below: *R* (*real-entity-representation generator*), *F* (*fake-entity-representation generator*), and *D* (*discriminator*). 
 
