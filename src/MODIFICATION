@@ -1,0 +1,142 @@
+Some of codes in Huggingface transformers v2.4.1 have been modified for BERTAC as follows.
+
+transformers:
+	- __init__.py: Commenting out other model settings except for Albert, Roberta, and BERT. 
+	- configuration_auto.py: Commenting out other model settings except for Albert, Roberta, and BERT.
+	- modeling_albert.py: The following four classes have been modified for BERTAC ALBERT model.
+		class BERTAC_AlbertModel(AlbertPreTrainedModel): BERTAC Albert model
+		class AlbertForSequenceClassification4SingleSent(AlbertPreTrainedModel): for GLUE single-sentence task
+		class AlbertForSequenceClassification(AlbertPreTrainedModel): for GLUE sentence-pair task and OpenQA's passage selector
+		class AlbertForQuestionAnswering(AlbertPreTrainedModel): for OpenQA's answer span selector
+	- modeling_auto.py: Commenting out other model settings except for Albert, Roberta, and BERT.
+	- modeling_bert.py: The following classes have been added/modified for BERTAC.
+        class BERTAC_BertModel(BertPreTrainedModel): modified from 'class BertModel'
+		class TIER_MHAttention(nn.Module):
+		class TIERAttention(nn.Module):
+		class TIERLayer(nn.Module):
+	- modeling_roberta.py: The following four classes have been modified for BERTAC RoBERTa model.
+		class BERTAC_RobertaModel(RobertaPreTrainedModel): BERTAC Roberta model
+		class RobertaForSequenceClassification4SingleSent(RobertaPreTrainedModel): for GLUE single-sentence task
+		class RobertaForSequenceClassification(RobertaPreTrainedModel): for GLUE sentence-pair task and OpenQA's passage selector
+		class RobertaForQuestionAnswering(RobertaPreTrainedModel): for OpenQA's answer span selector
+	- tokenization_albert.py: AlbertTokenizer has been modified for BERTAC to tokenize input texts passed to CNNs.
+		def _tokenize_for_cnn(self, text): # basic_tokenizer for adversarially pre-trained CNNs
+		* AlbertTokenizer.basic_tokenizer_for_cnn = BasicTokenizer(do_lower_case=True)
+		* AlbertTokenizer._tokenize_for_cnn(self, text): # basic_tokenizer for adversarially pre-trained CNNs
+	- tokenization_auto.py: Only the Albert-related, Roberta-related, and Bert-related stuffs remain, while the others have been deleted or commented out from the 'import' and 'TOKENIZER_MAPPING'
+	- tokenization_bert.py: BertTokenizer has been modified to tokeinze input texts given to adversarially pre-trained CNNs.
+		BertTokenizer.basic_tokenizer_for_cnn=BasicTokenizer(
+		do_lower_case=do_lower_case,never_split=never_split,tokenize_chinese_chars=tokenize_chinese_chars
+		)
+		BertTokenizer._tokenize_for_cnn(self,text):#basic_tokenizer for adversarially pre-trained CNNs
+	- tokenization_roberta.py: RobertaTokenizer has been modified for BERTAC to tokenize input texts passed to CNNs.
+		def _tokenize_for_cnn(self, text): # basic_tokenizer for adversarially pre-trained CNNs
+		* RobertaTokenizer.basic_tokenizer_for_cnn = BasicTokenizer(do_lower_case=True)
+		* RobertaTokenizer._tokenize_for_cnn(self, text): # basic_tokenizer for adversarially pre-trained CNNs
+	- tokenization_utils.py: The following functions have benn added/modified for BERTAC
+		PreTrainedTokenizer::tokenize_for_cnn
+		PreTrainedTokenizer::_tokenize_for_cnn
+		PreTrainedTokenizer::convert_bert_tokens_to_original_tokens
+		PreTrainedTokenizer::convert_original_tokens_to_cnn_ids
+		PreTrainedTokenizer::encode_for_cnn
+		PreTrainedTokenizer::encode_plus_for_cnn
+		PreTrainedTokenizer::prepare_for_model_for_cnn
+		PreTrainedTokenizer::truncate_sequences_for_cnn
+
+transformers/data
+	- __init__.py: Commenting out functions that were not used for GLUE and Open-domain QA experiments
+
+
+transformers/data/processors
+	- __init__.py: Import functions/classes relevant to GLUE and Open-domain QA experiments using BERTAC
+	- glue.py: The following function/classes have been Modified from 'glue.py' in the original Huggingface Transformers for BERTAC implementation
+		function
+		* def glue_convert_examples_to_features()
+		DataProcessor classes
+		* "cola": class ColaProcessor,
+		* "mnli": class MnliProcessor,
+		* "mnli-mm": class MnliMismatchedProcessor,
+		* "mrpc": class MrpcProcessor,
+		* "sst-2": class Sst2Processor,
+		* "sts-b": class StsbProcessor,
+		* "qqp": class QqpProcessor,
+		* "qnli": class QnliProcessor,
+		* "rte": class RteProcessor,
+		* "wnli": class WnliProcessor,
+	- openqa.py: Modified from squad.py in the original Huggingface transformers for open-domain QA experiments using BERTAC.
+	  Following functions and classes have been added or modified.
+		functions:
+		* def openqa_convert_example_to_features_for_cnn:
+		* def openqa_convert_example_to_features_init:
+		* def openqa_convert_example_to_features_init_for_cnn:
+		* def openqa_convert_examples_to_features:
+		classes:
+		* class OpenQAExample(object):
+		* class OpenQAFeatures(object):
+		* class OpenQAFeatures_for_cnn(object):
+		* class OpenQASelectorResult(object):
+		* class OpenQAResult(object):
+	- utils.py: The following classes have been modified for BERTAC
+		class InputExample4GLUE(object): Modification of the InputExample class for GLUE experiments using BERTAC
+		class InputFeatures4GLUE(object): Modification of the InputFeatures class for GLUE experiments using BERTAC
+
+examples.glue
+	- make_glue_cnn_vocab.py, run_glue.py, and run_glue_preprocess.py have been modified from examples/run_glue.py in the original HuggingFace Transformers as follows.
+	  * make_glue_cnn_vocab.py: for building vocabularies for pretrained CNNs
+	    - Other TLM settings except for ALBERT and RoBERTa have been commented out or deleted for simplicity
+	    - The main fuction is load_examples()
+	  * run_glue.py: training and evaluating models
+	    - Other model settings except for ALBERT and RoBERTa have been commented out or deleted for simplicity.
+	    - The following libraries/functions/classes have been added/modified:
+	      + Libraries: torchtext, cnn_utils and train_utils are additionally imported
+		  + Functions/classes: (see '## added by Jong-Hoon Oh')
+		    class TTDataset(torchtext.data.Dataset):
+			def load_and_cache_examples(): just loads cached examples (do not cache examples here but loads them already cached by 'run_openqa_preprocess.py')
+			def load_cnn_model_and_vocab(): loads the pretrained cnn and its vocab.
+			def train(): train a model
+			def evaluate(): evaluate a trained model
+	  * run_glue_preprocess.py: for caching feature files before training/testing.
+	    - Other model settings except for ALBERT and RoBERTa have been commented out or deleted for simplicity.
+	    - The following libraries/functions/classes have been added/modified:
+	      + Libraries: torchtext, cnn_utils, train_utils
+		  + Functions/classes:
+		    class TTDataset(torchtext.data.Dataset):
+			def load_cnn_model_and_vocab():
+			def load_and_cache_examples(): the main body of caching
+
+examples.openqa
+	- make_openqa_cnn_vocab.py, run_openqa_preprocess.py, run_openqa_reader.py, and run_openqa_selector.py have been modified from examples/run_squad.py in the original HuggingFace Transformers as follows.
+	  * make_openqa_cnn_vocab.py: for building vocabularies for pretrained CNNs.
+	    - Other TLM settings except for ALBERT and RoBERTa have been commented out or deleted for simplicity
+		- The main fuction is load_examples()
+	  * run_openqa_preprocess.py: for caching feature files before training/testing
+	    - Other model settings except for ALBERT and RoBERTa have been commented out or deleted for simplicity.
+	    - The following libraries/functions/classes have been added/modified:
+		  + Libraries: torchtext, cnn_utils, and train_utils are additionaly imported
+		  + Functions/classes:
+			class TTDataset(torchtext.data.Dataset):
+			def load_cnn_model_and_vocab():
+			def load_and_cache_examples(): the main body of caching
+	  * run_openqa_reader.py: for training/testing an answer span selector
+	    - Other model settings except for ALBERT and RoBERTa have been commented out or deleted for simplicity.
+	    - The following libraries/functions/classes have been added/modified:
+		  + Libraries: torchtext, cnn_utils, and train_utils are additionaly imported
+		  + Functions/classes:
+			class TTDataset(torchtext.data.Dataset):
+			def load_and_cache_examples(): just loads cached examples (does not cache examples here but loads them already cached by 'run_openqa_preprocess.py')
+			def load_cnn_model_and_vocab(): loads the pretrained cnn and its vocab.
+			def train(): train a model
+			def evaluate(): evaluate a trained model
+	  * run_openqa_reader.py: for training/testing a passage selector.
+	    - Other model settings except for ALBERT and RoBERTa have been commented out or deleted for simplicity.
+	    - The following libraries/functions/classes have been added/modified:
+	      + Libraries: torchtext, cnn_utils, and train_utils are additionaly imported
+		  + Functions/classes:
+		    class TTDataset(torchtext.data.Dataset):
+			def load_and_cache_examples(): just loads cached examples (does not cache examples here but loads them already cached by 'run_openqa_preprocess.py')
+			def load_cnn_model_and_vocab(): loads the pretrained cnn and its vocab.
+			def train(): trains a model
+			def evaluate(): evaluates a trained model
+											
+
+

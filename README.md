@@ -1,9 +1,9 @@
-BERTAC (*BERT*-style transformer-based language model with *A*dversarially pretrained *C*onvolutional neural network)
+BERTAC (BERT-style transformer-based language model with Adversarially pretrained Convolutional neural network)
 ======
 
 **BERTAC** is a framework that combines a Transformer-based Language Model (TLM) such as BERT with an adversarially pretrained CNN (Convolutional Neural Network). It was proposed in our ACL-IJCNLP paper:
 
-* [BERTAC: Enhancing Transformer-based Language Models with Adversarially Pretrained Convolutional Neural Networks](https://2021.aclweb.org/). 
+* [BERTAC: Enhancing Transformer-based Language Models with Adversarially Pretrained Convolutional Neural Networks](https://aclanthology.org/2021.acl-long.164/). 
 
 We showed in our experiments that BERTAC can improve the performance of TLMs on GLUE and open-domain QA tasks when using ALBERT or RoBERTa as the base TLM. 
 
@@ -18,7 +18,7 @@ BERTAC is designed to improve Transformer-based Language Models such as ALBERT a
 
 For a technical description of BERTAC, see our paper:
 
-* Jong-Hoon Oh, Ryu Iida, Julien Kloetzer, Kentaro Torisawa, [BERTAC: Enhancing Transformer-based Language Models with Adversarially Pretrained Convolutional Neural Networks](https://2021.aclweb.org/) 
+* Jong-Hoon Oh, Ryu Iida, Julien Kloetzer, Kentaro Torisawa, [BERTAC: Enhancing Transformer-based Language Models with Adversarially Pretrained Convolutional Neural Networks](https://aclanthology.org/2021.acl-long.164/) 
 
 
 ## <a name="try_bertac"></a>Try BERTAC 
@@ -29,6 +29,7 @@ BERTAC requires the following libraries and tools at runtime.
 
 * CUDA: A CUDA runtime must be available in the runtime environment. Currently, BERTAC has been tested with CUDA 10.1 and 10.2.
 * Python and Pytorch: BERTAC has been tested with Python 3.6 and 3.8, and Pytorch 1.5.1 and 1.8.1.
+* Perl: BERTAC has been tested with Perl 5.16.1 and 5.26.2.
 
 ### Installation
 You can install BERTAC by following the procedure described below. 
@@ -62,6 +63,15 @@ pip install -r requirements.txt
 # Download the spaCy model 'en_core_web_md' 
 python -m spacy download en_core_web_md
 ```
+
+* Install Perl and its JSON module into the conda environment. 
+
+```bash 
+# Install Perl and its JSON module
+conda install -c anaconda perl -n bertac38
+cpan install JSON
+```
+
 * Download the [fastText word embedding vectors](https://fasttext.cc/), the [ALBERT xxlarge model](https://github.com/google-research/albert), and our adversarially pretrained CNNs. The CNNs were pretrained using the settings described in our ACL-IJCNLP 2021 paper (See [cnn_models/README.md](cnn_models/README.md) for the details on our pretrained CNNs).
 
 ```
