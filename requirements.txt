@@ -1,0 +1,6 @@
+torchtext==0.2.3
+spacy==2.3.2
+regex
+pexpect
+sentencepiece
+tensorboardX
